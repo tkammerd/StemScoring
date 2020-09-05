@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>Get Object Relocation Scores</title>
+    <link rel="stylesheet" type="text/css" href="get_form_style.css" />
+  </head>
+  <body>
+    <?php
+      require "utilities.php";
+      $team_id = $_POST["team_id"];
+      $trial_num = $_POST["trial_num"];
+      open_database($link_id);
+      $selectHTML = create_team_selection($link_id, $team_id, "team_id", false);
+      $objects_remaining = 0;
+      $task_time = 0;
+      $result = mysqli_query($link_id, "SELECT * FROM obj_reloc WHERE teamID='$team_id' " . 
+        "AND trialNum='$trial_num'");
+      if ($cur_row = mysqli_fetch_array($result))
+      {
+        $objects_remaining = $cur_row["objectsRemaining"];
+        $task_time = $cur_row["taskTimeMS"] / 1000;
+      }
+    ?>
+    <iframe src="display_team_info.php?team_id=<?= $team_id ?>" width="75%" height="100%"style="float: right"></iframe>
+    <form action="get_obj_reloc.php" method="post">
+      Team: <?= $selectHTML ?><br />
+      Trial Number: 
+        <select name="trial_num" onchange="this.form.submit()">
+          <option <?= ($trial_num == 1)?'selected="selected"':'' ?>>1</option>
+          <option <?= ($trial_num == 2)?'selected="selected"':'' ?>>2</option>
+        </select>
+    </form>
+    <form action="update_obj_reloc.php" method="post">
+      <input type="hidden" name="team_id" value="<?= $team_id ?>" />
+      <input type="hidden" name="trial_num" value="<?= $trial_num ?>" />
+      <table>
+        <tr>
+          <td>Objects Remaining:</td>
+          <td><input class="shortblank" type="text" name="objects_remaining" value="<?= $objects_remaining ?>" /></td>
+        </tr>
+        <tr>
+          <td>Task Time:</td>
+          <td><input class="shortblank" type="text" name="task_time" value="<?= $task_time ?>" /></td>
+        </tr>
+        <tr>
+          <td><input type="submit" value="Accept&#10;Object&#10;Relocation&#10;Scores" /></td>
+          <td><input type="reset" value="Reset&#10;Object&#10;Relocation&#10;Scores" />
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>

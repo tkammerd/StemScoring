@@ -1,0 +1,5 @@
+AuthUserFile /home/mesa/public_html/prosthetic_arm_competition/supervisor/users 
+AuthName "Supervisors Only" 
+AuthGroupFile /dev/null 
+AuthType Basic 
+Require valid-user 

@@ -1,0 +1,5 @@
+AuthUserFile /home/mesa/public_html/prosthetic_arm_competition/worker/users 
+AuthName "Workers Allowed" 
+AuthGroupFile /dev/null 
+AuthType Basic 
+Require valid-user 
